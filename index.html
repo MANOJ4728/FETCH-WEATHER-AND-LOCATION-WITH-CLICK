@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP LOCATOR</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="center">
+        <form method="get">
+            <label for="name">LOCATOR</label><br>
+            <button id="locator-button" type="button"><i class="fas fa-search"></i> Click me</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <div id="weather">
+        <h1><i class="fas fa-cloud-sun"></i> WEATHER DETAILS</h1>
+        <div id="app">
+            <p>City: <span id="city">--</span></p>
+            <p>Temperature: <span id="temp">--</span>°C</p>
+            <p>Humidity: <span id="humidity">--</span>%</p>
+            <p>Pressure: <span id="pressure">--</span> hPa</p>
+            <p>Description: <span id="description">--</span></p>
+            <img id="weather-icon" src="#" alt="Weather Icon" />
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('locator-button').addEventListener('click', function () {
+            fetch('https://ipapi.co/json/')
+                .then(response => response.json())
+                .then(data => {
+                    const ip = data.ip;
+                    const city = data.city;
+                    console.log(`IP: ${ip}`);
+                    console.log(`City: ${city}`);
+                    removeElement(); 
+                    document.getElementById('city').textContent = city;
+
+                    // Fetch weather data for the selected city
+                    fetchWeatherData(city);
+                })
+                .catch(error => {
+                    console.error('There was an error:', error);
+                });
+        });
+
+        function removeElement() {
+            document.getElementById("center").style.display = "none";
+        }
+
+        if (performance.navigation.type === 1) {
+            document.getElementById('temp').textContent = '--';
+            document.getElementById('humidity').textContent = '--';
+            document.getElementById('pressure').textContent = '--';
+            document.getElementById('description').textContent = '--';
+            document.getElementById('city').textContent = '--';
+        }
+
+        const appid = 'cbf1b9f6f3127d65b15aa57c0cd3d28a';
+
+        function fetchWeatherData(city) {
+            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${appid}&units=metric`)
+                .then(response => response.json())
+                .then(data => {
+                    const temp = data.main.temp;
+                    const humidity = data.main.humidity;
+                    const pressure = data.main.pressure;
+                    const description = data.weather[0].description;
+                    const icon = data.weather[0].icon;
+
+                    document.getElementById('temp').textContent = temp;
+                    document.getElementById('humidity').textContent = humidity;
+                    document.getElementById('pressure').textContent = pressure;
+                    document.getElementById('description').textContent = description;
+
+                    // Set the weather icon image (replace with actual image URLs)
+                    document.getElementById('weather-icon').src = `https://example.com/${icon}.png`;
+                })
+                .catch(error => {
+                    console.error('There was an error:', error);
+                });
+        }
+    </script>
+</body>
+</html>
