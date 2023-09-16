@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IP LOCATOR</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
 </head>
 <body>
     <div id="center">
@@ -39,7 +41,7 @@
                     removeElement(); 
                     document.getElementById('city').textContent = city;
 
-                    // Fetch weather data for the selected city
+                    
                     fetchWeatherData(city);
                 })
                 .catch(error => {
@@ -49,14 +51,6 @@
 
         function removeElement() {
             document.getElementById("center").style.display = "none";
-        }
-
-        if (performance.navigation.type === 1) {
-            document.getElementById('temp').textContent = '--';
-            document.getElementById('humidity').textContent = '--';
-            document.getElementById('pressure').textContent = '--';
-            document.getElementById('description').textContent = '--';
-            document.getElementById('city').textContent = '--';
         }
 
         const appid = 'cbf1b9f6f3127d65b15aa57c0cd3d28a';
@@ -69,20 +63,37 @@
                     const humidity = data.main.humidity;
                     const pressure = data.main.pressure;
                     const description = data.weather[0].description;
-                    const icon = data.weather[0].icon;
-
+                    const iconCode = data.weather[0].icon;
+        
                     document.getElementById('temp').textContent = temp;
                     document.getElementById('humidity').textContent = humidity;
                     document.getElementById('pressure').textContent = pressure;
                     document.getElementById('description').textContent = description;
-
-                    // Set the weather icon image (replace with actual image URLs)
-                    document.getElementById('weather-icon').src = `https://example.com/${icon}.png`;
+        
+                    // Map weather condition codes to Font Awesome icons
+                    const weatherIcons = {
+                        '01d': 'fa-sun',        // clear sky (day)
+                        '02d': 'fa-cloud-sun',  // few clouds (day)
+                        '03d': 'fa-cloud',      // scattered clouds (day)
+                        '04d': 'fa-cloud',      // broken clouds (day)
+                        '09d': 'fa-cloud-showers-heavy',  // shower rain (day)
+                        '10d': 'fa-cloud-rain', // rain (day)
+                        '11d': 'fa-bolt',       // thunderstorm (day)
+                        '13d': 'fa-snowflake',  // snow (day)
+                        '50d': 'fa-smog',       // mist (day)
+                        // You can add more conditions as needed
+                    };
+        
+                    const weatherIcon = weatherIcons[iconCode] || 'fa-question-circle'; // Default icon
+        
+                    // Set the weather icon using Font Awesome
+                    document.getElementById('weather-icon').className = `fas ${weatherIcon}`;
                 })
                 .catch(error => {
                     console.error('There was an error:', error);
                 });
         }
+        
     </script>
 </body>
 </html>
