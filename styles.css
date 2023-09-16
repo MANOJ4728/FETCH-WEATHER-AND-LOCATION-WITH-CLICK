@@ -33,3 +33,6 @@ body {
   border: none;
   padding: 10px;
 }
+#weather-icon {
+  font-size: 2em; /* Adjust the size as needed */
+}
