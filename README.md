@@ -42,4 +42,3 @@ Thanks to OpenWeatherMap for providing weather data.
 
 Weather icons provided by Font Awesome.
 
-You can create a new file named README.md in your project directory and copy the above content into it. Adjust the "Author" section to include your name or the name of your team if applicable. This README will provide a basic introduction to your web app for users and contributors.
